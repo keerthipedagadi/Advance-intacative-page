@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Interactive Page</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            line-height: 1.6;
+            background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%); /* Blue to Purple Gradient */
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        /* Container Styling */
+        .container {
+            background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white */
+            backdrop-filter: blur(10px); /* Frosted glass effect */
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 900px;
+            animation: fadeIn 1s ease-out; /* Fade in animation */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 {
+            color: #fff; /* White headings */
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        p {
+            color: #e0e0e0;
+            font-size: 1.1em;
+        }
+
+        /* Section Specific Styling */
+        .section {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+            position: relative; /* For interactive elements positioning */
+        }
+
+        /* Button Styling */
+        .btn {
+            background-color: #ff6b6b; /* Reddish button */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            background-color: #ee5253; /* Darker red on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Quiz Section */
+        #quizSection .question-container {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #quizSection .question-text {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #f0f0f0;
+        }
+
+        #quizSection .options-container button {
+            background-color: #4CAF50; /* Green for quiz options */
+            margin: 8px;
+            padding: 12px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        #quizSection .options-container button:hover {
+            background-color: #45a049;
+        }
+
+        #quizSection .options-container button.selected {
+            background-color: #007bff; /* Blue for selected option */
+            border: 2px solid #0056b3;
+        }
+
+        #quizSection .options-container button.correct {
+            background-color: #28a745; /* Darker green for correct */
+        }
+
+        #quizSection .options-container button.incorrect {
+            background-color: #dc3545; /* Red for incorrect */
+        }
+
+        #quizResult {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #ffe082; /* Light yellow for result */
+        }
+
+        /* Joke Section */
+        #jokeSection .joke-text {
+            font-size: 1.4em;
+            margin: 20px auto;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #ffebee; /* Light red for joke text */
+            font-style: italic;
+        }
+
+        #jokeSection .error-message {
+            color: #ffeb3b; /* Yellow for error messages */
+            margin-top: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        /* Image Carousel Section */
+        #carouselSection {
+            overflow: hidden;
+            border-radius: 15px;
+            margin: 30px auto;
+            width: 100%;
+            max-width: 700px; /* Max width for carousel */
+            height: 450px;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            background-color: rgba(0, 0, 0, 0.3); /* Dark background for carousel */
+        }
+
+        .carousel-slide {
+            display: flex;
+            width: 400%; /* Adjust based on number of images */
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1); /* Smoother transition */
+        }
+
+        .carousel-slide img {
+            width: 100%; /* Each image takes full width of carousel container */
+            height: 100%;
+            object-fit: cover; /* Ensures images cover the area well */
+            flex-shrink: 0; /* Prevents images from shrinking */
+            border-radius: 15px; /* Match container border-radius */
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            border-radius: 50%; /* Circular buttons */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            outline: none; /* Remove focus outline */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px; /* Fixed width/height */
+            height: 50px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .carousel-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .prev-btn {
+            left: 15px;
+        }
+
+        .next-btn {
+            right: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome to My Interactive Showcase!</h1>
+        <p>Explore some dynamic features built with advanced CSS and JavaScript.</p>
+    </div>
+
+    <div class="container section" id="quizSection">
+        <h2>Interactive Quiz</h2>
+        <div id="quizContainer">
+            <div class="question-container">
+                <p class="question-text">Loading quiz...</p>
+                <div class="options-container">
+                    </div>
+            </div>
+        </div>
+        <button id="submitQuizBtn" class="btn">Submit Quiz</button>
+        <p id="quizResult"></p>
+    </div>
+
+    <div class="container section" id="carouselSection">
+        <h2>Beautiful Image Carousel</h2>
+        <div class="carousel-slide">
+            <img src="12.jpg">
+            <img src="13.jpg">
+            <img src="14.jpg">
+            <img src="15.jpg">
+        </div>
+        <button id="prevBtn" class="carousel-btn prev-btn">&#10094;</button>
+        <button id="nextBtn" class="carousel-btn next-btn">&#10095;</button>
+    </div>
+
+    <div class="container section" id="jokeSection">
+        <h2>Random Dad Joke Generator</h2>
+        <p id="jokeDisplay" class="joke-text">Click the button for a laugh!</p>
+        <button id="getJokeBtn" class="btn">Get Another Joke</button>
+        <p class="error-message" id="errorMessage"></p>
+    </div>
+
+    <script>
+        // --- JavaScript for Interactive Quiz ---
+        const quizQuestions = [
+            {
+                question: "Which of these is NOT a JavaScript framework?",
+                options: ["React", "Angular", "Vue", "Laravel"],
+                correct: "Laravel"
+            },
+            {
+                question: "What does CSS stand for?",
+                options: ["Cascading Style Sheets", "Creative Style Solutions", "Computer Style Software", "Cascading Simple Sheets"],
+                correct: "Cascading Style Sheets"
+            },
+            {
+                question: "Which HTML tag is used to define an internal style sheet?",
+                options: ["<script>", "<css>", "<style>", "<link>"],
+                correct: "<style>"
+            },
+            {
+                question: "What is the correct way to write a JavaScript array?",
+                options: ["var colors = (1:'red', 2:'green')", "var colors = ['red', 'green']", "var colors = 'red', 'green'", "var colors = <'red'>, <'green'>"],
+                correct: "var colors = ['red', 'green']"
+            },
+            {
+                question: "Which property is used to change the background color?",
+                options: ["bgcolor", "color", "background-color", "background"],
+                correct: "background-color"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = []; // To store user's selected answers
+
+        const quizContainer = document.getElementById('quizContainer');
+        const submitQuizBtn = document.getElementById('submitQuizBtn');
+        const quizResult = document.getElementById('quizResult');
+
+        function displayQuestion() {
+            const q = quizQuestions[currentQuestionIndex];
+            quizContainer.innerHTML = `
+                <div class="question-container">
+                    <p class="question-text">${currentQuestionIndex + 1}. ${q.question}</p>
+                    <div class="options-container">
+                        ${q.options.map((option, index) => `
+                            <button class="btn option-btn" data-option="${option}">${option}</button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            attachOptionListeners();
+            // Show submit button only on the last question
+            if (currentQuestionIndex === quizQuestions.length - 1) {
+                submitQuizBtn.style.display = 'block';
+            } else {
+                submitQuizBtn.style.display = 'none';
+            }
+            quizResult.textContent = ''; // Clear result
+        }
+
+        function attachOptionListeners() {
+            document.querySelectorAll('.option-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    // Remove 'selected' from all other options for this question
+                    event.target.parentElement.querySelectorAll('.option-btn').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    event.target.classList.add('selected');
+                    userAnswers[currentQuestionIndex] = event.target.dataset.option;
+
+                    // If it's not the last question, automatically move to next
+                    if (currentQuestionIndex < quizQuestions.length - 1) {
+                        setTimeout(() => {
+                            currentQuestionIndex++;
+                            displayQuestion();
+                        }, 500); // Small delay for visual feedback
+                    }
+                });
+            });
+        }
+
+        submitQuizBtn.addEventListener('click', () => {
+            score = 0;
+            quizQuestions.forEach((q, index) => {
+                if (userAnswers[index] === q.correct) {
+                    score++;
+                }
+            });
+            quizResult.textContent = `You scored ${score} out of ${quizQuestions.length}!`;
+            quizResult.style.color = score >= quizQuestions.length / 2 ? '#8bc34a' : '#ffeb3b'; // Green for pass, yellow for fail
+
+            // Show correct/incorrect answers visually
+            const optionButtons = document.querySelectorAll('.option-btn');
+            optionButtons.forEach(button => {
+                const option = button.dataset.option;
+                const q = quizQuestions[currentQuestionIndex]; // Get the current question
+
+                if (option === q.correct) {
+                    button.classList.add('correct');
+                } else if (button.classList.contains('selected') && option !== q.correct) {
+                    button.classList.add('incorrect');
+                }
+                button.disabled = true; // Disable buttons after submission
+            });
+
+            // Reset quiz for next attempt or show restart button
+            setTimeout(() => {
+                const restartBtn = document.createElement('button');
+                restartBtn.textContent = 'Retake Quiz';
+                restartBtn.classList.add('btn');
+                restartBtn.style.marginTop = '20px';
+                restartBtn.addEventListener('click', () => {
+                    currentQuestionIndex = 0;
+                    score = 0;
+                    userAnswers = [];
+                    displayQuestion();
+                    restartBtn.remove();
+                });
+                quizContainer.appendChild(restartBtn);
+            }, 1000);
+        });
+
+        // Initialize Quiz
+        displayQuestion();
+
+
+        // --- JavaScript for Image Carousel ---
+        const carouselSlide = document.querySelector('.carousel-slide');
+        const carouselImages = document.querySelectorAll('.carousel-slide img');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        let carouselCounter = 0;
+        // Get the width of the container, not just the first image
+        const carouselContainerWidth = document.getElementById('carouselSection').clientWidth;
+
+        // Adjust image width to match container on load
+        carouselImages.forEach(img => img.style.width = `${carouselContainerWidth}px`);
+
+        nextBtn.addEventListener('click', () => {
+            if (carouselCounter >= carouselImages.length - 1) {
+                carouselCounter = 0; // Loop back to the first image
+            } else {
+                carouselCounter++;
+            }
+            carouselSlide.style.transform = `translateX(${-carouselContainerWidth * carouselCounter}px)`;
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (carouselCounter <= 0) {
+                carouselCounter = carouselImages.length - 1; // Loop to the last image
+            } else {
+                carouselCounter--;
+            }
+            carouselSlide.style.transform = `translateX(${-carouselContainerWidth * carouselCounter}px)`;
+        });
+
+        // Optional: Auto-slide
+        let autoSlideInterval = setInterval(() => {
+            nextBtn.click();
+        }, 5000); // Change image every 5 seconds
+
+        // Pause auto-slide on hover
+        carouselSlide.parentElement.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+        carouselSlide.parentElement.addEventListener('mouseleave', () => {
+            autoSlideInterval = setInterval(() => {
+                nextBtn.click();
+            }, 5000);
+        });
+
+        // --- JavaScript for API Data Fetch (Dad Jokes) ---
+        const jokeDisplay = document.getElementById('jokeDisplay');
+        const getJokeBtn = document.getElementById('getJokeBtn');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // A list of fallback jokes if API fails or for more variety
+        const fallbackJokes = [
+            "Why don't scientists trust atoms? Because they make up everything!",
+            "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+            "What do you call a fake noodle? An impasta.",
+            "Why did the scarecrow win an award? Because he was outstanding in his field!",
+            "I'm reading a book on anti-gravity. It's impossible to put down!",
+            "What do you call cheese that isn't yours? Nacho cheese.",
+            "I'm so good at sleeping, I can do it with my eyes closed.",
+            "My cat was just sick on the carpet, I don't think it's feline good.",
+            "What do you call a sad strawberry? A blueberry.",
+            "Parallel lines have so much in common. It’s a shame they’ll never meet."
+        ];
+
+        let jokeIndex = 0; // To cycle through fallback jokes
+
+        const API_URL = 'https://icanhazdadjoke.com/';
+
+        async function fetchJoke() {
+            jokeDisplay.textContent = 'Fetching a new joke...';
+            errorMessage.textContent = ''; // Clear any previous error messages
+            getJokeBtn.disabled = true; // Disable button while fetching
+
+            try {
+                const response = await fetch(API_URL, {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                jokeDisplay.textContent = data.joke;
+            } catch (error) {
+                console.error('Error fetching joke:', error);
+                // Fallback to local jokes if API fails
+                jokeDisplay.textContent = fallbackJokes[jokeIndex % fallbackJokes.length];
+                jokeIndex++; // Move to next fallback joke
+                errorMessage.textContent = 'API failed! Displaying a local joke instead.';
+            } finally {
+                getJokeBtn.disabled = false; // Re-enable button
+            }
+        }
+
+        getJokeBtn.addEventListener('click', fetchJoke);
+
+        // Fetch a joke when the page loads
+        fetchJoke();
+    </script>
+</body>
+</html>
